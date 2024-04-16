@@ -66,28 +66,29 @@
 
         function exportAsPDF() {
             const mealPlanContent = document.getElementById("mealPlan");
-            html2pdf().from(mealPlanContent).save();
+        
+            // Apply custom styles to the meal plan content
+            mealPlanContent.querySelectorAll("li").forEach(item => {
+                item.style.padding = "10px";
+                item.style.borderBottom = "1px solid #ddd";
+                item.style.backgroundColor = "#f9f9f9";
+                item.style.fontFamily = "Arial, sans-serif";
+                item.style.fontSize = "14px";
+                item.style.color = "#333";
+            });
+        
+            // Generate PDF
+            html2pdf()
+                .from(mealPlanContent)
+                .set({
+                    margin: 20,
+                    filename: 'meal_plan.pdf',
+                    html2canvas: { scale: 2 },
+                    jsPDF: { format: 'a4', orientation: 'portrait' }
+                })
+                .save();
         }
 
-        /*
-        function generateMealPlanData() {
-            var mealPlanItems = document.getElementById("mealPlan").getElementsByTagName("li");
-            var mealPlanData = [];
-            for (var i = 0; i < mealPlanItems.length; i++) {
-                mealPlanData.push(mealPlanItems[i].textContent);
-            }
-            return mealPlanData;
-        }
-        
-        function exportAsPDF(mealPlanData) {
-            var doc = new jsPDF();
-            doc.text("Meal Plan", 10, 10);
-            for (var i = 0; i < mealPlanData.length; i++) {
-                doc.text(mealPlanData[i], 10, 20 + (i * 10));
-            }
-            doc.save("meal_plan.pdf");
-        }
-*/
         function clearResults() {
             document.getElementById("calories").textContent = "";
             document.getElementById("protein").textContent = "";
